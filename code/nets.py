@@ -56,8 +56,27 @@ class FeatureNet(FineNet):
     def _freeze_net(self):
         for param in self.parameters():
             param.requires_grad = False
+            
+            
+def save(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):    
+    path = _get_path(net, optimizer, mean, std, epochs, val_acc, scheduler, batch_size)
+    save_dict = {
+            'state_dict': net.state_dict(),
+            'mean': mean,
+            'std': std,
+            }
+    torch.save(save_dict, path)
+    
+def load(net, path = None, optimizer = None, mean = None, std = None, epochs = None, val_acc = None, scheduler = None, batch_size = 1, device = "cpu"):
+    if path is None:
+        path = _get_path(net, optimizer, mean, std, epochs, val_acc/100, scheduler, batch_size)
+    load_dict = torch.load(path, map_location=device)
+    net.load_state_dict(load_dict['state_dict'])
+    mean = load_dict['mean']
+    std = load_dict['std']
+    return mean, std
        
-def get_path(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):
+def _get_path(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):
     net_string = type(net).__name__
     if net_string.__eq__("FineNet") or net_string.__eq__("FeatureNet"):
         arch_string = net.arch + "_"
@@ -84,21 +103,3 @@ def get_path(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch
     
     val_acc = round(val_acc*100)
     return "models" + os.sep + net_string + os.sep + arch_string + opt_string + "_" + sched_string + "_" + mstd_string + "_Eps" + str(epochs) + "_Val" + str(val_acc) + '.pt'
-
-def save(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):    
-    path = get_path(net, optimizer, mean, std, epochs, val_acc, scheduler, batch_size)
-    save_dict = {
-            'state_dict': net.state_dict(),
-            'mean': mean,
-            'std': std,
-            }
-    torch.save(save_dict, path)
-    
-def load(net, path = None, optimizer = None, mean = None, std = None, epochs = None, val_acc = None, scheduler = None, batch_size = 1, device = "cpu"):
-    if path is None:
-        path = get_path(net, optimizer, mean, std, epochs, val_acc/100, scheduler, batch_size)
-    load_dict = torch.load(path, map_location=device)
-    net.load_state_dict(load_dict['state_dict'])
-    mean = load_dict['mean']
-    std = load_dict['std']
-    return mean, std

@@ -120,7 +120,7 @@ class Window(QMainWindow):
         super(Window, self).__init__()
         self.dialog = Ui_AFMNet()   
         self.dialog.setupUi(self)
-        self.dirPath = os.path.dirname(os.path.realpath(__file__))
+        self.dirPath = os.path.dirname(os.path.realpath(__file__)) + os.path.sep + ".."
         self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         archs = next(os.walk(self.dirPath + os.path.sep + "models"))[1]
         for arch in archs:
@@ -225,11 +225,3 @@ class ImageLabel(QLabel):
     def resizeEvent(self, event):
         if hasattr(self, "unScaledPixmap"):
             self.setScaledPixmap()
-        
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    app.lastWindowClosed.connect(app.quit)
-    application = Window(app)
-    application.show()
-    
-    sys.exit(app.exec())

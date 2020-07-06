@@ -137,13 +137,3 @@ class Ui_AFMNet(object):
         self.modelButton.setText(_translate("AFMNet", "Load a:"))
 
 from application import ImageLabel
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    AFMNet = QtWidgets.QMainWindow()
-    ui = Ui_AFMNet()
-    ui.setupUi(AFMNet)
-    AFMNet.show()
-    sys.exit(app.exec_())
-
