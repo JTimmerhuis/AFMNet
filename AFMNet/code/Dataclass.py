@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Oct 27 13:57:22 2019
-
-@author: jardi
+Contains all methods and classes relevant for data processing.
 """
 
 import torch
@@ -15,6 +13,11 @@ import math
 from torchvision import datasets, transforms
 
 class Dataclass():
+    """
+    Class used to load and preprocess our data.
+    
+    """
+    
     class AFMcrop(object):
         def __call__(self, img): 
             """

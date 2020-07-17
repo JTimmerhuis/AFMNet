@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 """
-@author: Jardi
 """
 
-from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication, QLabel, QFrame
+from PyQt5.QtWidgets import QMainWindow, QFileDialog, QLabel, QFrame
 from PyQt5.QtCore import Qt, QThread, QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QPixmap
 import torch
-from torchvision import transforms, models
+from torchvision import transforms
 from PIL import Image
+import os
+import pickle
+
+## To generate docs using Sphinx + autodoc; comment these out
 from dialog import Ui_AFMNet  # importing our generated file
 import nets
 from Dataclass import Dataclass
-import sys
-import os
-import pickle
 
 class Worker(QObject):
     finished = pyqtSignal()
@@ -29,6 +29,16 @@ class Worker(QObject):
     
     @pyqtSlot(str, torch.nn.Module)
     def loadModel(self, modelPath, net):
+        """
+        
+        :param modelPath: DESCRIPTION
+        :type modelPath: TYPE
+        :param net: DESCRIPTION
+        :type net: TYPE
+        :return: DESCRIPTION
+        :rtype: TYPE
+
+        """
         self.net = net
         self.progress.emit(25)
         

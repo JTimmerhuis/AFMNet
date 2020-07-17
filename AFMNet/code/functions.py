@@ -1,20 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-@author: Jardi
+Contains helper functions to train the model and visualize its performance.
 """
 
 from __future__ import print_function, division
 
-from Dataclass import Dataclass
-import nets
-
 import torch
-import torch.nn as nn
 import torch.optim as optim
 import matplotlib.pyplot as plt
 import copy
-from torch.optim import lr_scheduler
-from torchvision import transforms, models
 import time
 
 def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, scheduler = None, device = "cpu", num_epochs=25):

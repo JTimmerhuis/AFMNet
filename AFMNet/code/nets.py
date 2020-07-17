@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Oct 27 14:08:04 2019
-
-@author: jardi
+Contains all network classes and methods relevant to loading and saving network parameters.
 """
 
 import torch
@@ -12,6 +10,10 @@ import os
 from torchvision import models
 
 class ConvNet(nn.Module):
+    """
+    Class for our convolutional neural network with two convolutional layers as designed in the report.
+    """
+    
     def __init__(self):
         """
         Initializes a ConvNet with two convolutional layers and three fully connected layers.
@@ -44,6 +46,10 @@ class ConvNet(nn.Module):
         return x
 
 class FineNet(models.ResNet):
+    """
+    Class for the Finetuned (resnet18) model.
+    """
+    
     def __init__(self, arch = models.resnet18):
         """
         Initializes a fine tuned ResNet.
@@ -68,9 +74,9 @@ class FineNet(models.ResNet):
         self.load_state_dict(model.state_dict())
         
         ## Replacing last layer
-        self._edit_param()
+        self.edit_param()
         
-    def _edit_param(self):
+    def edit_param(self):
         """
         Replaces the last layer of the network to correspond with 2 classes.
         
@@ -82,6 +88,10 @@ class FineNet(models.ResNet):
         self.fc = nn.Linear(num_ftrs, 2)
         
 class FeatureNet(FineNet):
+    """
+    Class for the model with fixed paramters used as a feature extractor.
+    """
+    
     def __init__(self, arch = models.resnet18):
         """
         Initializes a ResNet to be used as a fixed feature extractor.
@@ -93,19 +103,19 @@ class FeatureNet(FineNet):
         ## Runs the init of FineNet with the _edit_param function of this class
         super(FeatureNet, self).__init__(arch)
         
-    def _edit_param(self):
+    def edit_param(self):
         """
         Freezes the network parameters and replaces the last layer.
 
         """
         
         ## Freezes the network parameters
-        self._freeze_net()
+        self.freeze_net()
         
         ## Replaces the last layer
-        super(FeatureNet, self)._edit_param()
+        super(FeatureNet, self).edit_param()
         
-    def _freeze_net(self):
+    def freeze_net(self):
         """
         Freezes the network paramters.
 
@@ -138,7 +148,7 @@ def save(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_siz
     """
     
     ## Get the path to save the file top
-    path = _get_path(net, optimizer, mean, std, epochs, val_acc, scheduler, batch_size)
+    path = get_path(net, optimizer, mean, std, epochs, val_acc, scheduler, batch_size)
     
     ## Create a dictionary with data to save and save data
     save_dict = {
@@ -179,7 +189,7 @@ def load(net, path = None, optimizer = None, mean = None, std = None, epochs = N
     
     ## If no path is passed to the method, get the path
     if path is None:
-        path = _get_path(net, optimizer, mean, std, epochs, val_acc/100, scheduler, batch_size)
+        path = get_path(net, optimizer, mean, std, epochs, val_acc/100, scheduler, batch_size)
         
     ## Load the dictionary
     load_dict = torch.load(path, map_location=device)
@@ -192,7 +202,7 @@ def load(net, path = None, optimizer = None, mean = None, std = None, epochs = N
     std = load_dict['std']
     return mean, std
        
-def _get_path(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):
+def get_path(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):
     """
     Generates a unique path string for a model with the given paramters.
     
