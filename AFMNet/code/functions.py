@@ -21,7 +21,7 @@ def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, schedul
       dataloaders(dict): Dictionary containing the Dataloader objects for the training and validation set.
       dataset_sizes(dict): Dictionary containing the size of both the training and validation set.
       scheduler(lr_scheduler, optional): The scheduler used during training. Defaults to None.
-      device(device: device or str, optional): The device which is used to train the model. Defaults to "cpu".
+      device(device or str, optional): The device which is used to train the model. Defaults to "cpu".
       num_epochs(int, optional): Number of training epochs. Defaults to 25.
 
     Returns:
@@ -115,7 +115,7 @@ def visualize_model(model, device, dataloaders, class_names, imshow, num_images=
 
     Args:
       model(Module): The network object.
-      device(device: device or str): The device on which the model is loaded.
+      device(device or str): The device on which the model is loaded.
       dataloaders(dict): Dictionary containing the Dataloader objects for the training and validation set.
       class_names(list): List of class names, i.e. 'good' and 'bad'.
       imshow(method): The imshow method of the Dataclass class.

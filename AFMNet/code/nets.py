@@ -186,7 +186,7 @@ def load(net, path = None, optimizer = None, mean = None, std = None, epochs = N
       val_acc(float, optional): The validation accuracy of the model. Defaults to None.
       scheduler(lr_scheduler, optional): The scheduler used during training. Defaults to None.
       batch_size(int, optional): The batch size used during training. Defaults to 1.
-      device(device: device or str, optional): The device on which the network is loaded. Defaults to "cpu".
+      device(device or str, optional): The device on which the network is loaded. Defaults to "cpu".
 
     Returns:
       tuple: Tuple of lists containt the means and standard deviations of each channel.

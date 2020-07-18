@@ -14,8 +14,13 @@ from application import Window
 
 
 if __name__ == "__main__":
+    ## Start an application
     app = QApplication(sys.argv)
+    
+    ## Quit application when the window is closed
     app.lastWindowClosed.connect(app.quit)
+    
+    ## Run the application
     application = Window(app)
     application.show()
     

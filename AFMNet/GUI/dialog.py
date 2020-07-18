@@ -136,4 +136,4 @@ class Ui_AFMNet(object):
         self.comboBox.setItemText(0, _translate("AFMNet", "Select Net..."))
         self.modelButton.setText(_translate("AFMNet", "Load a:"))
 
-#from application import ImageLabel
+from application import ImageLabel
