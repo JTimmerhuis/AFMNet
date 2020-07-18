@@ -10,15 +10,18 @@ import os
 from torchvision import models
 
 class ConvNet(nn.Module):
-    """
-    Class for our convolutional neural network with two convolutional layers as designed in the report.
-    """
+    """Class for our convolutional neural network with two convolutional layers as designed in the report."""
     
     def __init__(self):
         """
         Initializes a ConvNet with two convolutional layers and three fully connected layers.
         
+
+        Returns:
+            None.
+
         """
+
         super(ConvNet, self).__init__()
         self.conv1 = nn.Conv2d(3, 6, 5)
         self.pool = nn.MaxPool2d(2, 2)
@@ -28,13 +31,13 @@ class ConvNet(nn.Module):
         self.fc3 = nn.Linear(84, 2)
 
     def forward(self, x):
-        """
-        A forward pass of the network. Called when using net(input), so use net(input), not net.forward(input)!!
-        
-        :param x: Input tensor
-        :type x: Tensor
-        :return: Output Tensor
-        :rtype: Tensor
+        """A forward pass of the network. Called when using net(input), so use net(input), not net.forward(input)!!
+
+        Args:
+          x(Tensor): Input tensor.
+
+        Returns:
+          Tensor: Output Tensor.
 
         """
         x = self.pool(F.relu(self.conv1(x)))
@@ -46,17 +49,21 @@ class ConvNet(nn.Module):
         return x
 
 class FineNet(models.ResNet):
-    """
-    Class for the Finetuned (resnet18) model.
-    """
+    """Class for the Finetuned (resnet18) model."""
     
     def __init__(self, arch = models.resnet18):
         """
         Initializes a fine tuned ResNet.
         
-        :param arch: Model architecture, defaults to models.resnet18
-        :type arch: function, optional
-        :raises NotImplementedError: Exception for architectures that are not implemented yet
+
+        Args:
+            arch (function, optional): Model architecture. Defaults to models.resnet18.
+
+        Raises:
+            NotImplementedError: Exception for architectures that are not implemented yet.
+
+        Returns:
+            None.
 
         """
         
@@ -80,7 +87,11 @@ class FineNet(models.ResNet):
         """
         Replaces the last layer of the network to correspond with 2 classes.
         
+        Returns:
+            None.
+
         """
+
         ## Number of input features
         num_ftrs = self.fc.in_features
         
@@ -88,24 +99,29 @@ class FineNet(models.ResNet):
         self.fc = nn.Linear(num_ftrs, 2)
         
 class FeatureNet(FineNet):
-    """
-    Class for the model with fixed paramters used as a feature extractor.
-    """
+    """Class for the model with fixed paramters used as a feature extractor."""
     
     def __init__(self, arch = models.resnet18):
         """
         Initializes a ResNet to be used as a fixed feature extractor.
-        
-        :param arch: Model architecture, defaults to models.resnet18
-        :type arch: function, optional
+
+        Args:
+            arch (function, optional): Model architecture. Defaults to models.resnet18.
+
+        Returns:
+            None.
 
         """
+        
         ## Runs the init of FineNet with the _edit_param function of this class
         super(FeatureNet, self).__init__(arch)
         
     def edit_param(self):
         """
         Freezes the network parameters and replaces the last layer.
+
+        Returns:
+            None.
 
         """
         
@@ -119,31 +135,30 @@ class FeatureNet(FineNet):
         """
         Freezes the network paramters.
 
+        Returns:
+            None.
+
         """
+
         for param in self.parameters():
             param.requires_grad = False
             
             
 def save(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):    
-    """
-    Method to save the network parameters, mean and standard deviation.    
-    
-    :param net: The network object
-    :type net: Module
-    :param optimizer: The optimizer used during training
-    :type optimizer: Optimizer
-    :param mean: Means of each channel used to normalize the data
-    :type mean: list
-    :param std: Standard deviations of each channel used to normalize the data
-    :type std: list
-    :param epochs: Number of epochs used during training
-    :type epochs: int
-    :param val_acc: The validation accuracy of the model
-    :type val_acc: float
-    :param scheduler: The scheduler used during training, defaults to None
-    :type scheduler: lr_scheduler, optional
-    :param batch_size: The batch size used during training, defaults to 1
-    :type batch_size: int, optional
+    """Method to save the network parameters, mean and standard deviation.
+
+    Args:
+      net(Module): The network object.
+      optimizer(Optimizer): The optimizer used during training.
+      mean(list): Means of each channel used to normalize the data.
+      std(list): Standard deviations of each channel used to normalize the data.
+      epochs(int): Number of epochs used during training.
+      val_acc(float): The validation accuracy of the model.
+      scheduler(lr_scheduler, optional): The scheduler used during training. Defaults to None.
+      batch_size(int, optional): The batch size used during training. Defaults to 1.
+
+    Returns:
+        None.
 
     """
     
@@ -159,31 +174,22 @@ def save(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_siz
     torch.save(save_dict, path)
     
 def load(net, path = None, optimizer = None, mean = None, std = None, epochs = None, val_acc = None, scheduler = None, batch_size = 1, device = "cpu"):
-    """
-    Method that loads a network from a previously saved file. You can either pass a path string or pass all the other variables to the method. Returns means and standard deviations and loads network parameters to the net object.
-    
-    :param net: The network object
-    :type net: Module
-    :param path: The path to the model file, defaults to None
-    :type path: str, optional
-    :param optimizer: The optimizer used during training, defaults to None
-    :type optimizer: Optimizer, optional
-    :param mean: Means of each channel used to normalize the data, defaults to None
-    :type mean: list, optional
-    :param std: Standard deviations of each channel used to normalize the data, defaults to None
-    :type std: list, optional
-    :param epochs: Number of epochs used during training, defaults to None
-    :type epochs: int, optional
-    :param val_acc: The validation accuracy of the model, defaults to None
-    :type val_acc: float, optional
-    :param scheduler: The scheduler used during training, defaults to None
-    :type scheduler: lr_scheduler, optional
-    :param batch_size: The batch size used during training, defaults to 1
-    :type batch_size: int, optional
-    :param device: The device on which the network is loaded, defaults to "cpu"
-    :type device: device or str, optional
-    :return: Tuple of lists containt the means and standard deviations of each channel
-    :rtype: tuple
+    """Method that loads a network from a previously saved file. You can either pass a path string or pass all the other variables to the method. Returns means and standard deviations and loads network parameters to the net object.
+
+    Args:
+      net(Module): The network object.
+      path(str, optional): The path to the model file. Defaults to None.
+      optimizer(Optimizer, optional): The optimizer used during training. Defaults to None.
+      mean(list, optional): Means of each channel used to normalize the data. Defaults to None.
+      std(list, optional): Standard deviations of each channel used to normalize the data. Defaults to None.
+      epochs(int, optional): Number of epochs used during training. Defaults to None.
+      val_acc(float, optional): The validation accuracy of the model. Defaults to None.
+      scheduler(lr_scheduler, optional): The scheduler used during training. Defaults to None.
+      batch_size(int, optional): The batch size used during training. Defaults to 1.
+      device(device: device or str, optional): The device on which the network is loaded. Defaults to "cpu".
+
+    Returns:
+      tuple: Tuple of lists containt the means and standard deviations of each channel.
 
     """
     
@@ -203,27 +209,20 @@ def load(net, path = None, optimizer = None, mean = None, std = None, epochs = N
     return mean, std
        
 def get_path(net, optimizer, mean, std, epochs, val_acc, scheduler = None, batch_size = 1):
-    """
-    Generates a unique path string for a model with the given paramters.
-    
-    :param net: The network object
-    :type net: Module
-    :param optimizer: The optimizer used during training
-    :type optimizer: Optimizer
-    :param mean: Means of each channel used to normalize the data
-    :type mean: list
-    :param std: Standard deviations of each channel used to normalize the data
-    :type std: list
-    :param epochs: Number of epochs used during training
-    :type epochs: int
-    :param val_acc: The validation accuracy of the model
-    :type val_acc: float
-    :param scheduler: The scheduler used during training, defaults to None
-    :type scheduler: lr_scheduler, optional
-    :param batch_size: The batch size used during training, defaults to 1
-    :type batch_size: int, optional
-    :return: The path string of the model
-    :rtype: str
+    """Generates a unique path string for a model with the given paramters.
+
+    Args:
+      net(Module): The network object.
+      optimizer(Optimizer): The optimizer used during training.
+      mean(list): Means of each channel used to normalize the data.
+      std(list): Standard deviations of each channel used to normalize the data.
+      epochs(int): Number of epochs used during training.
+      val_acc(float): The validation accuracy of the model.
+      scheduler(lr_scheduler, optional): The scheduler used during training. Defaults to None.
+      batch_size(int, optional): The batch size used during training. Defaults to 1.
+
+    Returns:
+      str: The path string of the model.
 
     """
     

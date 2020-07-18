@@ -13,21 +13,19 @@ import math
 from torchvision import datasets, transforms
 
 class Dataclass():
-    """
-    Class used to load and preprocess our data.
-    
-    """
+    """Class used to load and preprocess our data."""
     
     class AFMcrop(object):
         def __call__(self, img): 
             """
             AFMCrop is a transform that removes the right 30% of the image. AFM images often have a colour scale bar at the right.
-            
-            :param img: An AFM image with a colour scale bar at the right
-            :type img: PIL Image
-            :return: PIL Image with the right 30% cropped
-            :rtype: PIL Image
-
+    
+            Args:
+              img(PIL Image): An AFM image with a colour scale bar at the right.
+    
+            Returns:
+              PIL Image: PIL Image with the right 30% cropped.
+    
             """
             
             w, h = img.size
@@ -38,28 +36,32 @@ class Dataclass():
     def __init__(self, data_dir):
         """
         Initalized Dataclass and sets data directory.
-        
-        :param data_dir: Directory of the data folder
-        :type data_dir: str
+
+        Args:
+            data_dir (str): Directory of the data folder.
+
+        Returns:
+            None.
 
         """
+        
         self.data_dir = data_dir
         
     def add_transforms(self, transforms_train, transforms_val, mean, std):
         """
         Adds transforms that converts image to tensor and normalizes image for preprocessing.
-        
-        :param transforms_train: List of image transforms performed on the training data set
-        :type transforms_train: list
-        :param transforms_val: List of image transforms performed on the validation data set
-        :type transforms_val: list
-        :param mean: Means of each channel used to normalize the data
-        :type mean: list
-        :param std: Standard deviations of each channel used to normalize the data
-        :type std: list
 
+        Args:
+          transforms_train(list): List of image transforms performed on the training data set.
+          transforms_val(list): List of image transforms performed on the validation data set.
+          mean(list): Means of each channel used to normalize the data.
+          std(list): Standard deviations of each channel used to normalize the data.
+
+        Returns:
+            None.
 
         """
+        
         self.mean = mean
         self.std = std
         
@@ -76,11 +78,13 @@ class Dataclass():
     def load_data(self, batch_size = 1, num_workers = 0):
         """
         A method that loads the data in a DataLoade object.
-        
-        :param batch_size: The batch size used during training, defaults to 1
-        :type batch_size: int, optional
-        :param num_workers: Number of parallel workers, defaults to 0
-        :type num_workers: int, optional
+
+        Args:
+          batch_size(int, optional): The batch size used during training. Defaults to 1.
+          num_workers(int, optional): Number of parallel workers. Defaults to 0.
+
+        Returns:
+            None.
 
         """
         
@@ -100,17 +104,15 @@ class Dataclass():
         self.class_names = self.image_datasets['train'].classes
         
     def get_meanstd(self, transform, batch_size, dataset = 'train'):
-        """
-        Calculates the mean and standard deviation of a data set.
-        
-        :param transform: List of image transforms used in preprocessing
-        :type transform: list
-        :param batch_size: Size of the batch in the dataloader
-        :type batch_size: int
-        :param dataset: String of dataset, either 'train' or 'val', defaults to 'train'
-        :type dataset: str, optional
-        :return: Tuple of mean and standard deviation
-        :rtype: tuple
+        """Calculates the mean and standard deviation of a data set.
+
+        Args:
+          transform(list): List of image transforms used in preprocessing.
+          batch_size(int): Size of the batch in the dataloader.
+          dataset(str, optional, optional): String of dataset, either 'train' or 'val', defaults to 'train'.
+
+        Returns:
+          tuple: Tuple of mean and standard deviation.
 
         """
         mean = 0.
@@ -140,26 +142,27 @@ class Dataclass():
         return mean, std
         
     def get_batchdata(self, data = 'train'):
-        """
-        Old method that makes a grid of images.
-        
-        :param data: String of the data set, either 'train' or 'val', defaults to 'train'
-        :type data: str, optional
-        :return: Tuple of Image grid and classes
-        :rtype: tuple
+        """Old method that makes a grid of images.
+
+        Args:
+          data(str, optional, optional): String of the data set, either 'train' or 'val', defaults to 'train'.
+
+        Returns:
+          tuple: Tuple of Image grid and classes.
 
         """
         inputs, classes = next(iter(self.dataloaders[data]))
         return torchvision.utils.make_grid(inputs), classes
         
     def imshow(self, inp, title=None):
-        """
-        Plot a tensor as an image.
-        
-        :param inp: An image tensor.
-        :type inp: Tensor
-        :param title: Title of the plot, defaults to None
-        :type title: str, optional
+        """Plot a tensor as an image.
+
+        Args:
+          inp(Tensor): An image tensor.
+          title(str, optional): Title of the plot. Defaults to None.
+
+        Returns:
+            None.
 
         """
         

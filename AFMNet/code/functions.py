@@ -12,27 +12,20 @@ import copy
 import time
 
 def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, scheduler = None, device = "cpu", num_epochs=25):
-    """
-    A method that trains the paramters of the network to classify AFM images.
-    
-    :param model: The network object
-    :type model: Module
-    :param criterion: The loss function used during training
-    :type criterion: loss
-    :param optimizer: The optimizer used during training
-    :type optimizer: Optimizer
-    :param dataloaders: Dictionary containing the Dataloader objects for the training and validation set
-    :type dataloaders: dict
-    :param dataset_sizes: Dictionary containing the size of both the training and validation set
-    :type dataset_sizes: dict
-    :param scheduler: The scheduler used during training, defaults to None
-    :type scheduler: lr_scheduler, optional
-    :param device: The device which is used to train the model, defaults to "cpu"
-    :type device: device or str, optional
-    :param num_epochs: Number of training epochs, defaults to 25
-    :type num_epochs: int, optional
-    :return: The trained network object
-    :rtype: Module
+    """A method that trains the paramters of the network to classify AFM images.
+
+    Args:
+      model(Module): The network object.
+      criterion(loss): The loss function used during training.
+      optimizer(Optimizer): The optimizer used during training.
+      dataloaders(dict): Dictionary containing the Dataloader objects for the training and validation set.
+      dataset_sizes(dict): Dictionary containing the size of both the training and validation set.
+      scheduler(lr_scheduler, optional): The scheduler used during training. Defaults to None.
+      device(device: device or str, optional): The device which is used to train the model. Defaults to "cpu".
+      num_epochs(int, optional): Number of training epochs. Defaults to 25.
+
+    Returns:
+      Module: The trained network object.
 
     """
     since = time.time()
@@ -118,23 +111,18 @@ def train_model(model, criterion, optimizer, dataloaders, dataset_sizes, schedul
     return model
 
 def visualize_model(model, device, dataloaders, class_names, imshow, num_images=9):
-    """
-    A method that shows a grid of images with their correct label and predictions. It also returns the validation accuracy.
-    
-    :param model: The network object
-    :type model: Module
-    :param device: The device on which the model is loaded
-    :type device: device or str
-    :param dataloaders: Dictionary containing the Dataloader objects for the training and validation set
-    :type dataloaders: dict
-    :param class_names: List of class names, i.e. 'good' and 'bad'
-    :type class_names: list
-    :param imshow: The imshow method of the Dataclass class
-    :type imshow: method
-    :param num_images: Number of images plotted in the grid, defaults to 9
-    :type num_images: int, optional
-    :return: The validation accuracy
-    :rtype: float
+    """A method that shows a grid of images with their correct label and predictions. It also returns the validation accuracy.
+
+    Args:
+      model(Module): The network object.
+      device(device: device or str): The device on which the model is loaded.
+      dataloaders(dict): Dictionary containing the Dataloader objects for the training and validation set.
+      class_names(list): List of class names, i.e. 'good' and 'bad'.
+      imshow(method): The imshow method of the Dataclass class.
+      num_images(int, optional): Number of images plotted in the grid. Defaults to 9.
+
+    Returns:
+      float: The validation accuracy.
 
     """
     
