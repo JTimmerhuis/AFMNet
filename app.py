@@ -6,11 +6,9 @@
 from __future__ import print_function, division
 
 import sys
-sys.path.insert(1, 'GUI')
-
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication, QLabel, QFrame
-import dialog
-from application import Window
+import gui.dialog
+from gui.application import Window
 
 
 if __name__ == "__main__":

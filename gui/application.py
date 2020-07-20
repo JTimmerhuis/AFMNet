@@ -13,9 +13,18 @@ import os
 import pickle
 
 ## To generate docs using Sphinx + autodoc; comment these out
-from dialog import Ui_AFMNet  # importing our generated file
-import nets
-from Dataclass import Dataclass
+
+
+import sys
+if 'sphinx' in sys.modules:
+    from .dialog import Ui_AFMNet
+    from ..code import nets
+    from ..code.Dataclass import Dataclass
+else:
+    from gui.dialog import Ui_AFMNet # importing our generated file
+    import code.nets as nets
+    from code.Dataclass import Dataclass
+    
 
 class Worker(QObject):
     """
