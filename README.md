@@ -82,13 +82,45 @@ The models folders hostst all the models. Each folder contains models correspond
 * Next you will see `Eps` plus the Epoch number in the file name. For instance, `Eps50`.
 * Finally, you will see the validation accuracy as `Val` + the accuracy in percentages rounded to the nearest integer, e.g. `Val86`
 
-Between each bullet point an underscore will be present in the filename. An example for a Convnet would be `Adam_NoScheduler_OwnMStd_Eps25_Val71.pt`. An example for a FineNet or FeatureNet would be `resnet18_Adam_NoScheduler_ImageMStd_Eps50_Val81.pt`. This naming convention is used by the methods in `code/nets.py'.
+Between each bullet point an underscore will be present in the filename. An example for a Convnet would be `Adam_NoScheduler_OwnMStd_Eps25_Val71.pt`. An example for a FineNet or FeatureNet would be `resnet18_Adam_NoScheduler_ImageMStd_Eps50_Val81.pt`. This naming convention is used by the methods in `code/nets.py`.
 
 ## GUI
+Below we will describe how to run the GUI, how to use the GUI and we will finally discuss the code behind the GUI. The GUI is a great way to visualise the prediction/classification of the models.
 
+### Running the GUI
+The code that runs the GUI is `app.py` in the main directory. It is recommended to run this from the (Anaconda) command line in the working directory
 
+```
+python app.py
+```
 
+This opens the application. The code can also be run from an IDE, such as Spyder, however because IDEs are GUIs themselves, this might give weird errors.
 
+### Using the GUI
+The GUI has three buttons: one to load a pre-trained model, one to load an AFM image and one to predict the label of that image. To load a pre-trained model one must first select a model type -- `ConvNet`, `FeatureNet`, or `FineNet` -- in the `Select Net...` dropdown menu. You can then click on the `Load a:` button to load a pre-trained model. One can use the `Upload Image` button to upload an image. Finally, you can use the `Predict Image` button to predict if the image is a 'good' or 'bad' AFM. This button will not work if either the model or image is not loaded.
+
+### Behind the GUI
+The GUI is created using the [PyQt5] module. You can use their designer to design a GUI and then use python to add functionalities to e.g. the buttons.
+
+#### QT Designer and `gui/dialog.py`
+After installing PyQt5, you can open the designer by simply typing `designer` in the (Anaconda) command prompt. The design of the GUI is saved as a `.ui` file, in our case `gui/dialog.ui`. The lay-out can be changed in the Qt Designer. It is then possible to convert the `.ui` file by typing the following command in the command prompt (while in the gui folder):
+
+```
+pyuic5 dialog.ui -o dialog.py
+```
+
+This generates a `dialog.py` file. In our case, to make the GUI work, we have to change line 139 of `dialog.py` from
+
+```
+from application import ImageLabel
+```
+to
+```
+from gui.application import ImageLabel
+```
+
+#### `gui/application.py`
+`application.py` is the file that adds functionality to the labels present in the desginer and `dialog.py`. It uses a `Window()` class to add these functionalities. Often a `Worker()` class is started on a parallel thread separate from the thread the GUI is running on. The `Worker()` then carries out the button functionalities. If you don't do this, the whole GUI would freeze until one functionality, for instance loading an image, is finished.
 
 [PyTorch]: https://pytorch.org/
 [tutorial]: https://pytorch.org/tutorials
@@ -96,3 +128,4 @@ Between each bullet point an underscore will be present in the filename. An exam
 [Transfer Learning for Computer Vision]: https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html
 [PyTorch DataLoader]: https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader
 [ImageNet]: http://www.image-net.org/
+[PyQt5]: https://www.riverbankcomputing.com/static/Docs/PyQt5/
