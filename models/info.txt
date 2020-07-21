@@ -1,0 +1,8 @@
+net1 order:
+relu Conv:	in 3 -> out 6; kernel 5
+MaxPool:kernel 2
+relu Conv:	in 6 -> out 16; kernel 5
+MaxPool:kernel 2
+relu:	in 16*53*53 -> out 120
+relu:	in 120 -> out 84
+lin:	in 84 -> out 2
