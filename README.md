@@ -4,6 +4,9 @@ This project consists of code to train a convolutional neural network as a class
 ## PyTorch
 [PyTorch] is an open source machine learning framework for Python. Their [tutorial] page is a great place to start with PyTorch. We used parts of the [Training a Classifier] and [Transfer Learning for Computer Vision] tutorials.
 
+## Git LFS
+Images (`*.png` and `*.jpg`) and model (`*.pt`) files are pushed to Git using [Git Large File Storage] (Git LFS). Git LFS replaces large files with text pointers inside Git, whereas the contents are pushed to a remote account. My account has only '1 GB' LFS storage, so only the best models are uploaded to git. There exists a `*.zip` file somewhere with all the trained models.
+
 ## File structure
 The file structure of the repository is shown in the tree below. We will discuss every folder and their contents below. We will first discuss the folders unrelated to the GUI and discuss the GUI separately in the end.
 
@@ -71,7 +74,7 @@ Everything relevant to training the Neural Networks is in the `code` folder and 
 All the data is stored in the `data` folder. The data is divided in a training data and validation data. There are 60 images (32 good, 28 bad) in the training data set and 21 (12 good, 9 bad) in the validation data set. These have been manually selected. As said before, the [PyTorch DataLoader] is used to load the data. This means that the folders inside the `train` or `val` have to be named according to the labels, i.e. `bad` and `good`, with their corresponding images inside. It is important the the data is placed in this folder structure, otherwise the code won't work.
 
 ### `models/ folder`
-The models folders hostst all the models. Each folder contains models corresponding to their model type. `info.txt` contains information about the convolutional netowork we designed ourselves, `ConvNet`. Each model is saved as a `.pt` file and has a very specific naming convention:
+The models folders hostst all the models. Each folder contains models corresponding to their model type. `info.txt` contains information about the convolutional netowork we designed ourselves, `ConvNet`. Each model is saved as a `*.pt` file and has a very specific naming convention:
 
 * If the model is a `FeatureNet` of `FineNet`, the file name will start with the architecture of the pre-trained model. Currently, only `resnet18` is supported.
 * Next, the optimizer, or training algorithm, will be in the filename. The exact naming convention depends on the batch size.
@@ -107,7 +110,7 @@ The GUI has three buttons: one to load a pre-trained model, one to load an AFM i
 The GUI is created using the [PyQt5] module. You can use their designer to design a GUI and then use python to add functionalities to e.g. the buttons.
 
 #### QT Designer and `gui/dialog.py`
-After installing PyQt5, you can open the designer by simply typing `designer` in the (Anaconda) command prompt. The design of the GUI is saved as a `.ui` file, in our case `gui/dialog.ui`. The lay-out can be changed in the Qt Designer. It is then possible to convert the `.ui` file by typing the following command in the command prompt (while in the gui folder):
+After installing PyQt5, you can open the designer by simply typing `designer` in the (Anaconda) command prompt. The design of the GUI is saved as a `.ui` file, in our case `gui/dialog.ui`. The lay-out can be changed in the Qt Designer. It is then possible to convert the `*.ui` file to a python file by typing the following command in the command prompt (while in the gui folder):
 
 ```
 pyuic5 dialog.ui -o dialog.py
@@ -126,6 +129,7 @@ from gui.application import ImageLabel
 #### `gui/application.py`
 `application.py` is the file that adds functionality to the labels present in the desginer and `dialog.py`. It uses a `Window()` class to add these functionalities. Often a `Worker()` class is started on a parallel thread separate from the thread the GUI is running on. The `Worker()` then carries out the button functionalities. If you don't do this, the whole GUI would freeze until one functionality, for instance loading an image, is finished.
 
+[Git Large File Storage]: https://git-lfs.github.com/
 [PyTorch]: https://pytorch.org/
 [tutorial]: https://pytorch.org/tutorials
 [Training a Classifier]: https://pytorch.org/tutorials/beginner/blitz/cifar10_tutorial.html#sphx-glr-beginner-blitz-cifar10-tutorial-py
