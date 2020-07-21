@@ -97,6 +97,10 @@ python app.py
 This opens the application. The code can also be run from an IDE, such as Spyder, however because IDEs are GUIs themselves, this might give weird errors.
 
 ### Using the GUI
+Below you see a screenshot of the GUI.
+
+![gui]
+
 The GUI has three buttons: one to load a pre-trained model, one to load an AFM image and one to predict the label of that image. To load a pre-trained model one must first select a model type -- `ConvNet`, `FeatureNet`, or `FineNet` -- in the `Select Net...` dropdown menu. You can then click on the `Load a:` button to load a pre-trained model. One can use the `Upload Image` button to upload an image. Finally, you can use the `Predict Image` button to predict if the image is a 'good' or 'bad' AFM. This button will not work if either the model or image is not loaded.
 
 ### Behind the GUI
@@ -129,3 +133,4 @@ from gui.application import ImageLabel
 [PyTorch DataLoader]: https://pytorch.org/docs/stable/data.html#torch.utils.data.DataLoader
 [ImageNet]: http://www.image-net.org/
 [PyQt5]: https://www.riverbankcomputing.com/static/Docs/PyQt5/
+[gui]: gui/gui.png
